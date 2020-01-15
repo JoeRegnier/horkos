@@ -1,0 +1,24 @@
+replicaCount: 1
+resources:
+  limits:
+    cpu: 500m
+    memory: 750Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
+image:
+  repositoryBaseURL: joeregnier
+service:
+  tier: frontend
+server:
+  context:
+    path: /horkos
+database:
+  host: [horkos-host_EXTERNAL_SERVICE]
+  name: horkos
+  userSecret:
+      key: rw_user
+      name: [horkos-host_EXTERNAL_SERVICE]-credentials
+  passwordSecret:
+      key: rw_password
+      name: [horkos-host_EXTERNAL_SERVICE]-credentials

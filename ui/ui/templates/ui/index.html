@@ -1,0 +1,368 @@
+<html>
+{% load static %}
+{% load mathfilters %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'ui/index.css' %}">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css"
+        integrity="sha256-3h45mwconzsKjTUULjY+EoEkoRhXcOIU4l5YAw2tSOU=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css"
+        integrity="sha256-etrwgFLGpqD4oNAFW08ZH9Bzif5ByXK2lXNHKy7LQGo=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"
+        integrity="sha256-NXRS8qVcmZ3dOv3LziwznUHPegFhPZ1F/4inU7uC8h0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+
+    <script src="{% static 'ui/index-js.js' %}"></script>
+</head>
+
+<body style="min-height: 100% !important; background-color: #d8e5dc;">
+    <div class="container-fluid">
+        <div class="row header">
+            <!-- Header -->
+            <div class="col-6 col-md-4 col-sm-4 col-lg-6 horkos-padding">
+                <!-- Spacer -->
+                <img src="{% static 'ui/logo2.png' %}" id="horkos-title" class="horkos-title" alt="Logo"
+                    style="padding-top: 0.5%; padding-left: 1%; padding-bottom: 2%; max-height: 100%">
+            </div>
+            <div class="col-3 buttons-padding">
+                <!--Filter One-->
+                <div class="row justify-content-center button-row">
+                    <div id="open-filter-btn" class="btn btn-primary filter-btn">
+                        Open
+                    </div>
+                    <div id="ignored-filter-btn" class="btn btn-primary filter-btn">
+                        Ignored
+                    </div>
+                    <div id="verified-filter-btn" class="btn btn-primary filter-btn">
+                        Verified
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 buttons-padding">
+                <div class="row justify-content-center">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary dropdown-toggle sort-btn" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item sort-btn-item">
+                                Score
+                            </a>
+                            <a class="dropdown-item sort-btn-item">
+                                Date
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-1 buttons-padding">
+                <div class="row justify-content-center">
+
+                    <div class="btn btn-primary view-btn list-view-btn disabled-view-btn">
+                        <i class="fas fa-list" style="margin-top: 18%;"></i>
+                    </div>
+                    <div class="btn btn-primary view-btn carousel-view-btn">
+                        <i class="fas fa-chevron-left" style="margin-top: 18%;"></i>
+                        <!--<i class="far fa-square"></i>-->
+                        <i class="fas fa-chevron-right" style="margin-top: 18%;"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 buttons-padding">
+                <div class="row justify-content-right">
+                    <div id="show-details-btn" class="btn btn-primary show-details-btn disabled-show-details-btn">
+                        Details
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row body-row">
+            <div class="col-3">
+                <!-- Query list -->
+                <div class="card queries-card">
+                    <div class="card-header queries-card-header">
+                        <div class="search">
+                            <input id="searchTerm" type="text" class="searchTerm" placeholder="">
+                            <button type="submit" class="searchButton fa fa-search"></button>
+                        </div>
+                        <!--Search-->
+                    </div>
+                    <div class="card-body queries-card-body">
+                        <ul id="queries_list">
+                            <!-- append issues here-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <!--Stats & Issues-->
+                <div class="row chart-line">
+                    <!--Stats-->
+                    <div class="col-3">
+                        <div class="card card-height">
+                            <div class="card-header status-issue-header">
+                                <b>Status Of Issues</b></div>
+                            <div class="card-body status-issue-body">
+                                <canvas id="verify_ignore_chart" class="verify_ignore_chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <!--Stat Two-->
+                        <div class="card card-height">
+                            <div class="card-header total-issue-header">
+                                <b>Total Issue Count</b></div>
+                            <div class="card-body total-issue-body">
+                                <canvas id="line-chart" class="line-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="container general-details-container">
+                            <div class="card-header general-details-header">
+                                <b>Issue Information</b>
+                            </div>
+                            <div id="general-details-body" class="card-body general-details-body">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <b class="issue_stat">Avg. Open Score:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row justify-content-end">
+                                            <span id="avg_open_score" class="issue_stat_value"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <b class="issue_stat">Avg. Verified Score:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row justify-content-end">
+                                            <span id="avg_verified_score" class="issue_stat_value"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <b class="issue_stat">Avg. Ignored Score:</b>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="row justify-content-end">
+                                            <span id="avg_ignored_score" class="issue_stat_value"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container domain-score-container">
+                            <div class="card domain-score-header">
+                                <b>Domain Scorecard</b>
+                            </div>
+                            <div class="row domain-score-row">
+                                <div class="col-4 card domain-score-card-top domain-score-card-left">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">EAL</b>
+                                        <span class="dot dot6 ">
+                                            <b class="letter-grade-score-na">N/A</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-4 card domain-score-card-top domain-score-card-middle">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">CEVD</b>
+                                        <span class="dot dot1">
+                                            <b class="letter-grade-score">A</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-4 card domain-score-card-top domain-score-card-right">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">VCM</b>
+                                        <span class="dot dot2">
+                                            <b class="letter-grade-score">B+</b>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row domain-score-row">
+                                <div class="col-4 card domain-score-card-bottom domain-score-card-left">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">UPIC</b>
+                                        <span class="dot dot3">
+                                            <b class="letter-grade-score">C</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-4 card domain-score-card-bottom domain-score-card-middle">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">CEVD_T</b>
+                                        <span class="dot dot4">
+                                            <b class="letter-grade-score">D-</b>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-4 card domain-score-card-bottom domain-score-card-right">
+                                    <div class="card domain-score-body">
+                                        <b class="domain-name">TOPS</b>
+                                        <span class="dot dot5">
+                                            <b class="letter-grade-score">F</b>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="details" class="row details details-box hidden">
+                            <!--Details tab / dropdown-->
+                            <div class="card details-card">
+                                <div class="card-header details-header">
+                                    <b>Details</b>
+                                    <i class="fas fa-times close-details"></i></div>
+                                <div class="card-body details-body">
+
+                                    <div class="row details-info">
+                                        <div class="col-6">
+                                            <div class="row details-row">
+                                                <div id="weights_col" class="col">
+                                                    <div class="row even-row">
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <b>Score Threshold:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="scorethreshold_value"
+                                                                class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row odd-row">
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <b>Most Recent Revision:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="mostrecentrevision_value"
+                                                                class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="row even-row">
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <b>Last Run Time:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="lastruntime_value" class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row odd-row">
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <b>Average Run Time:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="averageruntime_value"
+                                                                class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row even-row">
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                <b># Recorded Runs:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="numrecordedruns_value"
+                                                                class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row odd-row">
+                                                        <div class="col-6">
+                                                            <div class="row">
+                                                                <b>DB Server:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="databaseserver_value"
+                                                                class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row even-row">
+                                                        <div class="col-6">
+                                                            <div class="row">
+                                                                <b>Database:</b>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div id="database_value" class="row justify-content-end">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row query-row">
+                                                <span><b>SQL Query: </b><span id="sql-query"></span></span>
+                                            </div>
+                                            <div class="row query-row">
+                                                <span><b>Context Query: </b><span id="context-query"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row carousel-row">
+                        <!-- Issue Carousel-->
+                        <div class="col-12 carousel-holder">
+                            <div class="row justify-content-center carousel-holder-row">
+                                <i class="prev fas fa-chevron-circle-left carousel_arrow"></i>
+                                <div id="issues_carousel" class="issues_carousel"></div>
+                                <i class="next fas fa-chevron-circle-right carousel_arrow"></i>
+                                <div id="card-deck" class="card-deck"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

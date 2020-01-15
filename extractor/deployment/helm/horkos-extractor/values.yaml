@@ -1,0 +1,32 @@
+replicaCount: 1
+resources:
+  limits:
+    cpu: 2
+    memory: 4Gi
+  requests:
+    cpu: 500m
+    memory: 1.25Gi
+image:
+  repositoryBaseURL: joeregnier
+service:
+  tier: backend
+database:
+  horkos:
+    host: [horkos-host_external_service]
+    name: horkos
+    userSecret:
+      key: rw_user
+      name: [horkos-host_external_service]-credentials
+    passwordSecret:
+      key: rw_password
+      name: [horkos-host_external_service]-credentials
+  [domain]:
+    host: [domain_exteral_service]
+    name: [domain]
+    userSecret:
+      key: ro_user
+      name: [domain_external_service]-credentials
+    passwordSecret:
+      key: ro_password
+      name: [domain_exteral_service]-credentials
+cronSchedule: "0 18 * * *"
