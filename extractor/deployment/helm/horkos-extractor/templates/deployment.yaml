@@ -1,0 +1,57 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "name" . }}
+spec:
+  schedule: {{ quote .Values.cronSchedule | required "you must provide a cronSchedule value" }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 10
+  failedJobsHistoryLimit: 3
+  revisionHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: {{ template "name" . }}
+              image: {{ .Values.image.repositoryBaseURL }}/{{ template "name" . }}:{{ template "appversion" .}}
+              imagePullPolicy: Always
+              env:
+                - name: HORKOS_DATASOURCE_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.database.horkos.host }}-jdbc-urls
+                      key: {{ .Values.database.horkos.name }}
+                - name: HORKOS_DATASOURCE_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.database.horkos.userSecret.name }}
+                      key: {{ .Values.database.horkos.userSecret.key }}
+                - name: HORKOS_DATASOURCE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.database.horkos.passwordSecret.name }}
+                      key: {{ .Values.database.horkos.passwordSecret.key }}
+                - name: [DOMAIN]_DATASOURCE_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.database.cevdtopmaster.host }}-jdbc-urls
+                      key: {{ .Values.database.cevdtopmaster.name }}
+                - name: [DOMAIN]_DATASOURCE_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.database.cevdtopmaster.userSecret.name }}
+                      key: {{ .Values.database.cevdtopmaster.userSecret.key }}
+                - name: [DOMAIN]_DATASOURCE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.database.cevdtopmaster.passwordSecret.name }}
+                      key: {{ .Values.database.cevdtopmaster.passwordSecret.key }}
+              ports:
+                - containerPort: 8080
+                  name: sb-port
+              resources:
+{{ toYaml .Values.resources | indent 16 }}
+          imagePullSecrets:
+            - name: myregistrykey

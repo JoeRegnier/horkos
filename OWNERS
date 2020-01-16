@@ -1,0 +1,8 @@
+filters:
+  ".*":
+    reviewers:
+      - andrewrkeys
+      - joeregnier
+    approvers:
+      - andrewrkeys
+      - joeregnier

@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "name" . }}
+  labels:
+    app: {{ template "name" . }}
+    tier: {{ quote .Values.service.tier }}
+    ingress-mode: admin
+spec:
+  rules:
+    - host: {{.Values.externalHost}}
+      http:
+        paths:
+          - path: {{.Values.server.context.path}}/
+            backend:
+              serviceName: {{ template "name" . }}
+              servicePort: 80
