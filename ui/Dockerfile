@@ -1,7 +1,6 @@
 FROM python:3.6
 
-RUN mkdir horkos-ui
-ADD . /horkos-ui
+ADD ui /horkos-ui
 WORKDIR /horkos-ui
 
 RUN pip install --no-cache-dir -r requirements.txt
