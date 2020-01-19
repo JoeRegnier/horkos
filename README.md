@@ -1,10 +1,12 @@
 @Master
-![Extractor](https://github.com/JoeRegnier/horkos/workflows/Horkos Extractor Master Image CI & Publish/badge.svg)
-![UI](https://github.com/JoeRegnier/horkos/workflows/Horkos UI Master CI Action/badge.svg)
+
+![Extractor](https://github.com/JoeRegnier/horkos/workflows/Horkos%20Extractor%20Master%20Image%20CI%20&amp;%20Publish/badge.svg)
+![UI](https://github.com/JoeRegnier/horkos/workflows/Horkos%20UI%20Master%20CI%20Action/badge.svg)
 
 @Other
-![Extractor](https://github.com/JoeRegnier/horkos/workflows/Horkos Extractor Docker Tagged Image CI/badge.svg)
-![UI](https://github.com/JoeRegnier/horkos/workflows/Horkos UI Docker Tagged Image CI/badge.svg)
+
+![Extractor](https://github.com/JoeRegnier/horkos/workflows/Horkos%20Extractor%20Docker%20Tagged%20Image%20CI/badge.svg)
+![UI](https://github.com/JoeRegnier/horkos/workflows/Horkos%20UI%20Docker%20Tagged%20Image%20CI/badge.svg)
 
 # Horkos
 Horkos is a data quality analysis and scoring system designed to automate assessment of readiness for release to production environments.  Horkos uses natural language processing techniques to detect and report anomolies for correction. 
