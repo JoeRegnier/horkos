@@ -1,10 +1,12 @@
-name: Docker Image CI
+name: Docker Tagged Image CI
 
 on: 
-  [push,create]:
+  push:
     branches-ignore:
       - master
-
+  create:
+    branches-ignore:
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
