@@ -1,4 +1,4 @@
-- name: UI Master CI Action
+name: UI Master CI Action
 
 on: 
   push:
