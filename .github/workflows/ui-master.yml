@@ -16,6 +16,11 @@ jobs:
       id: vars
       run: echo ::set-output name=tag::horkos-ui-$(echo $(date +%s))
     
+    - name: Build the tagged Docker image
+      run: docker build . --file ui/Dockerfile --tag joeregnier/horkos:${{steps.vars.outputs.tag}}
+    - name: Push  the docker image
+      run: docker push joeregnier/horkos:${{steps.vars.outputs.tag}}
+    
     - name: build latest docker image
       run: docker build . --file ui/Dockerfile --tag joeregnier/horkos:horkos-ui-latest  
     - name: push latest docker image
