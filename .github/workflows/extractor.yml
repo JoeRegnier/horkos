@@ -1,13 +1,16 @@
-name: Docker Image CI
+name: Docker Tagged Image CI
 
-on: [push]
+on: 
+  push:
+    branches-ignore:
+      - master 
+  create:
+    branches-ignore:
+      - master
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: Login to DockerHub
@@ -15,11 +18,8 @@ jobs:
     - name: Get the version
       id: vars
       run: echo ::set-output name=tag::horkos-extractor-$(echo $(date +%s))
+
     - name: Build the tagged Docker image
       run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos:${{steps.vars.outputs.tag}}
     - name: Push  the docker image
       run: docker push joeregnier/horkos:${{steps.vars.outputs.tag}}
-    - name: build latest docker image
-      run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos:horkos-extractor-latest
-    - name: pish latest docker image
-      run: docker push joeregnier/horkos:horkos-extractor-latest
