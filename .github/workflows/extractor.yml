@@ -1,4 +1,4 @@
-name: Docker Tagged Image CI
+name: Horkos Extractor Docker Tagged Image CI
 
 on: 
   push:
