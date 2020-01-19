@@ -16,10 +16,10 @@ jobs:
       id: vars
       run: echo ::set-output name=tag::$(echo $(date +%s))
     - name: Build the tagged Docker image
-      run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos-extractor:${{steps.vars.outputs.tag}}
+      run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos/horkos-extractor:${{steps.vars.outputs.tag}}
     - name: Push  the docker image
       run: docker push joeregnier/horkos/horkos-extractor:${{steps.vars.outputs.tag}}
     - name: build latest docker image
-      run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos-extractor:latest
+      run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos/horkos-extractor:latest
     - name: pish latest docker image
       run: docker push joeregnier/horkos/horkos-extractor:latest
