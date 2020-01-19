@@ -1,4 +1,4 @@
-name: Master Image CI
+name: Horkos Extractor Master Image CI & Publish
 
 on: 
   push:
