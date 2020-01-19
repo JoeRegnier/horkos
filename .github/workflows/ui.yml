@@ -1,4 +1,4 @@
-name: Docker Tagged Image CI
+name: Horkos UI Docker Tagged Image CI
 
 on: 
   push:
