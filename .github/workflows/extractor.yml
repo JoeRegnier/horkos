@@ -22,4 +22,4 @@ jobs:
     - name: build latest docker image
       run: docker build . --file extractor/Dockerfile --tag joeregnier/horkos:horkos-extractor-latest
     - name: pish latest docker image
-      run: docker push joeregnier/horkos:latest
+      run: docker push joeregnier/horkos:horkos-extractor-latest
