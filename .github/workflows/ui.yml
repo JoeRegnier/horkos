@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on: 
+  [push,create]:
+    branches-ignore:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to DockerHub
+      run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::horkos-ui-$(echo $(date +%s))
+    
+    - name: Build the tagged Docker image
+      run: docker build . --file ui/Dockerfile --tag joeregnier/horkos-ui:${{steps.vars.outputs.tag}}
+    - name: Push  the docker image
+      run: docker push joeregnier/horkos-ui:${{steps.vars.outputs.tag}}
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login to DockerHub
+      run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::horkos-ui-$(echo $(date +%s))
+    
+    - name: build latest docker image
+      run: docker build . --file ui/Dockerfile --tag joeregnier/horkos:horkos-ui-latest  
+    - name: push latest docker image
+      run: docker push joeregnier/horkos:horkos-ui-latest
