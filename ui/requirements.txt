@@ -1,4 +1,4 @@
-Django==2.2.8
+Django==2.2.24
 mysql-connector==2.2.9
 mysqlclient==1.4.2.post1
 pytz==2019.1
